@@ -4,7 +4,7 @@ output: pdf_document
 date: '2023-03-12'
 ---
 
-2.(b)
+Question 2.(b)
 
 ```{r, include = TRUE, message = FALSE}
 rm(list = ls())
@@ -24,11 +24,7 @@ summary(mle1)
 # The estimates are 5.533(s.e.: 0.1075)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+Question 4:
 
 ```{r message=FALSE, include=TRUE}
 rm(list = ls())
@@ -50,9 +46,7 @@ res$par
 
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
+Question 5.(b):
 
 ```{r message=FALSE, include=TRUE}
 load("~/Desktop/SEM2/Incomplete data analysis/due2/dataex5.Rdata")
@@ -89,14 +83,10 @@ p <- res[1]
 lambda <- res[2]
 mu <- res[3]
 
-#data_den <- p*lambda*dataex5^(-lambda-1) + (1 - p)*mu*dataex5^(-mu-1)
 
 hist(dataex5, breaks = bins_fd(dataex5) ,cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.4, xlim = c(1,15))
 curve(p*lambda*x^(-lambda-1) + (1 - p)*mu*x^(-mu-1) ,
       add = TRUE, lwd = 2, col = "blue2")
 
 
-# hist(dataex5,xlim=c(0,4))
 ```
-
-
