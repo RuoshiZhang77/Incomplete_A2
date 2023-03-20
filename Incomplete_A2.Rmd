@@ -1,0 +1,102 @@
+---
+title: "Incomplete_A2"
+output: pdf_document
+date: '2023-03-12'
+---
+
+2.(b)
+
+```{r, include = TRUE, message = FALSE}
+rm(list = ls())
+load("~/Desktop/SEM2/Incomplete data analysis/due2/dataex2.Rdata")
+require(maxLik)
+
+log_like <- function(param, data){
+x <- data[,1]; r <- data[,2]
+sd <- 1.5
+meanx <- param[1]
+sum(r*log(dnorm(x, meanx, sd)) + (1-r)*log(pnorm(x, meanx, sd)))
+}
+
+mle1 <- maxLik(logLik = log_like, data = dataex2, start = c(meanx = 0)) #mean(dataex2[,1], na.rm = TRUE)))
+summary(mle1)
+
+# The estimates are 5.533(s.e.: 0.1075)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r message=FALSE, include=TRUE}
+rm(list = ls())
+load("~/Desktop/SEM2/Incomplete data analysis/due2/dataex4.Rdata")
+require(maxLik)
+ 
+dataex4_obs <- na.omit(dataex4)
+
+log_likelihood <- function(param){
+x_obs <- dataex4_obs[,1]; y_obs <- dataex4_obs[,2]
+beta0 <- param[1]
+beta1 <- param[2]
+sum((y_obs*(beta0+beta1*x_obs))) - sum(log(1+exp(beta0+beta1*x_obs)))
+}
+
+res <- optim(c(2,2), log_likelihood, control = list(fnscale = -1))
+res$par
+
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r message=FALSE, include=TRUE}
+load("~/Desktop/SEM2/Incomplete data analysis/due2/dataex5.Rdata")
+em.mixture.two <- function(y, theta0, eps){ 
+n <- length(y)
+theta <- theta0
+p <- theta[1]
+lambda <- theta[2]
+mu <- theta[3]
+
+diff <- 1
+
+while(diff > eps){
+theta.old <- theta
+#E-step
+ptilde1 <- p*lambda*y^(-lambda-1)
+ptilde2 <- (1 - p)*mu*y^(-mu-1) 
+ptilde <- ptilde1/(ptilde1 + ptilde2)
+#M-step
+p <- mean(ptilde)
+lambda <- sum(ptilde)/sum(log(y)*ptilde)
+mu <- sum(1-ptilde)/sum(log(y)*(1-ptilde))
+theta <- c(p, lambda, mu) 
+diff <- sum(abs(theta - theta.old))
+}
+return(theta)
+}
+res <- em.mixture.two(y = dataex5, c(0.3, 0.3, 0.4), 0.0001)
+
+bins_fd <- function(vec) {
+  diff(range(vec)) / (2 * IQR(vec)/length(vec)^(1/3))
+}
+p <- res[1]
+lambda <- res[2]
+mu <- res[3]
+
+#data_den <- p*lambda*dataex5^(-lambda-1) + (1 - p)*mu*dataex5^(-mu-1)
+
+hist(dataex5, breaks = bins_fd(dataex5) ,cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.4, xlim = c(1,15))
+curve(p*lambda*x^(-lambda-1) + (1 - p)*mu*x^(-mu-1) ,
+      add = TRUE, lwd = 2, col = "blue2")
+
+
+# hist(dataex5,xlim=c(0,4))
+```
+
+
