@@ -19,6 +19,7 @@ sum(r*log(dnorm(x, meanx, sd)) + (1-r)*log(pnorm(x, meanx, sd)))
 }
 
 mle1 <- maxLik(logLik = log_like, data = dataex2, start = c(meanx = 0)) #mean(dataex2[,1], na.rm = TRUE)))
+
 summary(mle1)
 
 # The estimates are 5.533(s.e.: 0.1075)
@@ -84,8 +85,8 @@ lambda <- res[2]
 mu <- res[3]
 
 
-hist(dataex5, breaks = bins_fd(dataex5) ,cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.4, xlim = c(1,15))
-curve(p*lambda*x^(-lambda-1) + (1 - p)*mu*x^(-mu-1) ,
+hist(dataex5, breaks = 'FD' ,cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.4, xlim = c(0,15),freq = F)
+curve(p*lambda*x**(-lambda-1) + (1 - p)*mu*x**(-mu-1) ,
       add = TRUE, lwd = 2, col = "blue2")
 
 
