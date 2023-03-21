@@ -85,7 +85,7 @@ lambda <- res[2]
 mu <- res[3]
 
 
-hist(dataex5, breaks = 'FD' ,cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.4, xlim = c(0,15),freq = F)
+hist(dataex5, breaks = 'FD' ,cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.4, xlim = c(1,15),freq = F)
 curve(p*lambda*x**(-lambda-1) + (1 - p)*mu*x**(-mu-1) ,
       add = TRUE, lwd = 2, col = "blue2")
 
